@@ -1,6 +1,6 @@
 # wordpress-phpmyadmin-mariadb on macbook m1
 
-- clone this git repo or copy and the paste the `docker-compose.yml` file. Run the following command to run the wordpress environment on docker
+- clone this git repo `git clone git@github.com:zrshishir/wordpress-phpmyadmin-docker.git` or copy and the paste the `docker-compose.yml` file. Run the following command to run the wordpress environment on docker
 
     'docker compose up -d'
 
