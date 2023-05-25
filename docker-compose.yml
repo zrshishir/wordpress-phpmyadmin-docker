@@ -1,0 +1,54 @@
+version: '3'
+services:
+  db:
+    container_name: dev-db
+    image: mariadb:10.6
+    volumes:
+      - './data/mysql:/var/lib/mysql'
+    ports:
+      - 18766:3306
+    restart: always
+    environment:
+      MYSQL_USER: root
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: wordpress
+      MYSQL_PASSWORD: wordpress
+      
+    networks:
+      - wpsite-network
+
+  phpmyadmin:
+    container_name: dev-phpmyadmin
+    depends_on:
+      - db
+    image: phpmyadmin
+    restart: always
+    ports:
+      - 8181:80
+    environment:
+      PMA_HOST: db:3306
+      MYSQL_ROOT_PASSWORD: password
+    networks:
+      - wpsite-network
+ 
+  wordpress:
+    container_name: 'local-wordpress'
+    depends_on:
+      - db
+    image: 'wordpress:latest'
+    ports:
+      - 80:80
+    restart: always
+    environment:
+      WORDPRESS_DB_HOST: db:3306
+      WORDPRESS_DB_USER: root
+      WORDPRESS_DB_PASSWORD: wordpress
+      WORDPRESS_DB_NAME: wordpress
+    volumes:
+      - "./wordpress:/var/www/html"
+      - "./plugins:/var/www/html/wp-content/plugins"
+    networks:
+      - wpsite-network
+networks:
+  wpsite-network:
+    driver: bridge
